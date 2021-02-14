@@ -2,5 +2,5 @@
 
 Tests with time-series forecasting algorithms.
 
-Starting with [ARIMA](./ARIMA/Readme.md).
+Starting with [ARIMA](./ARIMA/README.md).
 

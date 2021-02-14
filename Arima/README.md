@@ -5,7 +5,10 @@
 - [ARIMA: Autoregressive integrated moving average](https://en.wikipedia.org/wiki/Autoregressive_integrated_moving_average) - *wikipedia overview*
 - [statsmodels](https://www.statsmodels.org/stable/index.html) - *Python module that provides classes and functions for the estimation of many different statistical models, as well as for conducting statistical tests, and statistical data exploration*
 - [ARIMA python tutorial @ Machine Learning Mastery](https://machinelearningmastery.com/arima-for-time-series-forecasting-with-python/)
+- [ARIMA hyperparameter search in Python](https://machinelearningmastery.com/grid-search-arima-hyperparameters-with-python/)
 - [patsy- Describing statistical models in Python](https://patsy.readthedocs.io/en/latest/)
+
+
 
 ## Useful support links
 
