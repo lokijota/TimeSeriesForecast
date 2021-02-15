@@ -188,12 +188,13 @@ So, we'll handle these for you now:
 "
 
 # configure the hub for an edge device
-echo "registering device..."
-if test -z "$(az iot hub device-identity list -n $IOTHUB | grep "deviceId" | grep $EDGE_DEVICE)"; then
-    az iot hub device-identity create --hub-name $IOTHUB --device-id $EDGE_DEVICE --edge-enabled -o none
-    checkForError
-fi
-DEVICE_CONNECTION_STRING=$(az iot hub device-identity connection-string show --device-id $EDGE_DEVICE --hub-name $IOTHUB --query='connectionString')
+#echo "registering device..."
+#if test -z "$(az iot hub device-identity list -n $IOTHUB | grep "deviceId" | grep $EDGE_DEVICE)"; then
+#    az iot hub device-identity create --hub-name $IOTHUB --device-id $EDGE_DEVICE --edge-enabled -o none
+#    checkForError
+#fi
+#DEVICE_CONNECTION_STRING=$(az iot hub device-identity connection-string show --device-id $EDGE_DEVICE --hub-name $IOTHUB --query='connectionString')
+DEVICE_CONNECTION_STRING=the DEVICE_CONNECTION_STRING
 
 # creating the AMS account creates a service principal, so we'll just reset it to get the credentials
 echo "setting up service principal..."
@@ -248,58 +249,58 @@ echo "  This is needed to run samples or tutorials involving video playback."
 az ams streaming-endpoint start --resource-group $RESOURCE_GROUP --account-name $AMS_ACCOUNT -n default --no-wait
 
 # deploy the IoT Edge runtime on a VM
-az vm show -n $IOT_EDGE_VM_NAME -g $RESOURCE_GROUP &> /dev/null
-if [ $? -ne 0 ]; then
+#az vm show -n $IOT_EDGE_VM_NAME -g $RESOURCE_GROUP &> /dev/null
+#if [ $? -ne 0 ]; then
+#
+#    echo -e "
+#Finally, we'll deploy a VM that will act as your IoT Edge device for using the LVA samples."
 
-    echo -e "
-Finally, we'll deploy a VM that will act as your IoT Edge device for using the LVA samples."
-
-    curl -s $CLOUD_INIT_URL > $CLOUD_INIT_FILE
+    #curl -s $CLOUD_INIT_URL > $CLOUD_INIT_FILE
 
     # here be dragons
     # sometimes a / is present in the connection string and it breaks sed
     # this escapes the /
-    DEVICE_CONNECTION_STRING=${DEVICE_CONNECTION_STRING//\//\\/} 
-    sed -i "s/xDEVICE_CONNECTION_STRINGx/${DEVICE_CONNECTION_STRING//\"/}/g" $CLOUD_INIT_FILE
+#    DEVICE_CONNECTION_STRING=${DEVICE_CONNECTION_STRING//\//\\/} 
+#    sed -i "s/xDEVICE_CONNECTION_STRINGx/${DEVICE_CONNECTION_STRING//\"/}/g" $CLOUD_INIT_FILE
 
-    az vm create \
-    --resource-group $RESOURCE_GROUP \
-    --name $IOT_EDGE_VM_NAME \
-    --image Canonical:UbuntuServer:18.04-LTS:latest \
-    --admin-username $IOT_EDGE_VM_ADMIN \
-    --admin-password $IOT_EDGE_VM_PWD \
-    --vnet-name $VNET \
-    --subnet 'default' \
-    --custom-data $CLOUD_INIT_FILE \
-    --public-ip-address "" \
-    --size "Standard_DS3_v2" \
-    --tags sample=lva \
-    --output none
+#    az vm create \
+#    --resource-group $RESOURCE_GROUP \
+#    --name $IOT_EDGE_VM_NAME \
+#    --image Canonical:UbuntuServer:18.04-LTS:latest \
+#    --admin-username $IOT_EDGE_VM_ADMIN \
+#    --admin-password $IOT_EDGE_VM_PWD \
+#    --vnet-name $VNET \
+#    --subnet 'default' \
+#    --custom-data $CLOUD_INIT_FILE \
+#    --public-ip-address "" \
+#    --size "Standard_DS3_v2" \
+#    --tags sample=lva \
+#    --output none
 
-    checkForError
+#    checkForError
 
-    echo -e "
-To access the VM acting as the IoT Edge device, 
-- locate it in the portal 
-- click Connect on the toolbar and choose Bastion
-- enter the username and password below
+#    echo -e "
+#To access the VM acting as the IoT Edge device, 
+#- locate it in the portal 
+#- click Connect on the toolbar and choose Bastion
+#- enter the username and password below
 
-The VM is named ${GREEN}$IOT_EDGE_VM_NAME${NC}
-Username ${GREEN}$IOT_EDGE_VM_ADMIN${NC}
-Password ${GREEN}$IOT_EDGE_VM_PWD${NC}
+#The VM is named ${GREEN}$IOT_EDGE_VM_NAME${NC}
+#Username ${GREEN}$IOT_EDGE_VM_ADMIN${NC}
+#Password ${GREEN}$IOT_EDGE_VM_PWD${NC}
 
-This information can be found here:
-${BLUE}$VM_CREDENTIALS_FILE${NC}"
+#This information can be found here:
+#${BLUE}$VM_CREDENTIALS_FILE${NC}"
 
-    echo $IOT_EDGE_VM_NAME >> $VM_CREDENTIALS_FILE
-    echo $IOT_EDGE_VM_ADMIN >> $VM_CREDENTIALS_FILE
-    echo $IOT_EDGE_VM_PWD >> $VM_CREDENTIALS_FILE
+    #echo $IOT_EDGE_VM_NAME >> $VM_CREDENTIALS_FILE 
+    #echo $IOT_EDGE_VM_ADMIN >> $VM_CREDENTIALS_FILE
+    #echo $IOT_EDGE_VM_PWD >> $VM_CREDENTIALS_FILE
 
-else
-    echo -e "
-${YELLOW}NOTE${NC}: A VM named ${YELLOW}$IOT_EDGE_VM_NAME${NC} was found in ${YELLOW}${RESOURCE_GROUP}.${NC}
-We will not attempt to redeploy the VM."
-fi
+#else
+#    echo -e "
+#${YELLOW}NOTE${NC}: A VM named ${YELLOW}$IOT_EDGE_VM_NAME${NC} was found in ${YELLOW}${RESOURCE_GROUP}.${NC}
+#We will not attempt to redeploy the VM."
+#fi
 
 # write env file for edge deployment
 echo "SUBSCRIPTION_ID=\"$SUBSCRIPTION_ID\"" >> $ENV_FILE
