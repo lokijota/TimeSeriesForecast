@@ -173,7 +173,6 @@ EDGE_DEVICE="lva-sample-device"
 
 echo getting IOTHUB_CONNECTION_STRING
 #IOTHUB_CONNECTION_STRING=$(az iot hub connection-string show --hub-name ${IOTHUB} --query='connectionString')
-IOTHUB_CONNECTION_STRING=HostName=visionaijota.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=0YiIFEGlJzdYMtGbt7AGenQVj8S0Jxv+sq5PODMk9mA=
 echo got it
 
 CONTAINER_REGISTRY=$(echo "${RESOURCES}" | awk '$2 ~ /Microsoft.ContainerRegistry\/registries$/ {print $1}')
